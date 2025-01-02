@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfesseurController;
+use App\Http\Controllers\PublicationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,3 +21,16 @@ Route::group(['prefix' => 'professeurs'], function () {
 
 Route::get('/login', [ProfesseurController::class, 'showLoginForm'])->name('professeur.login');
 Route::post('/login', [ProfesseurController::class, 'login']);
+
+Route::get('/professeur/home', [ProfesseurController::class, 'home'])->name('professeur.home');
+Route::get('/professeur/profile', [ProfesseurController::class, 'profile'])
+    ->name('professeur.profile')
+    ->middleware('auth:professeur');
+
+Route::post('/professeur/update-photo', [ProfesseurController::class, 'updatePhoto'])
+    ->name('professeur.update.photo')
+    ->middleware('auth:professeur');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/publications', [PublicationController::class, 'store'])->name('professeur.publications.store');
+});

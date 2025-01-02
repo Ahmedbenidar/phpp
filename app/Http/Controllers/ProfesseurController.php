@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Filiere;
 use App\Models\Professeur;
+use App\Models\Publication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfesseurController extends Controller
 {
@@ -59,18 +61,18 @@ class ProfesseurController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
         if (Auth::guard('professeur')->attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            
+            // Redirection vers la page home après une connexion réussie
+            return redirect()->route('professeur.home');
         }
 
-        return back()->withErrors([
-            'email' => 'Les informations de connexion ne correspondent pas à nos enregistrements.',
-        ]);
+        return back()->with('error', 'Les identifiants fournis ne correspondent pas à nos enregistrements.');
     }
 
     public function show($id)
@@ -117,5 +119,53 @@ class ProfesseurController extends Controller
         $professeur->delete();
         return redirect()->route('professeur.index')
             ->with('success', 'Professeur supprimé avec succès!');
+    }
+
+    public function home()
+    {
+        $publications = Publication::with('professeur')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('professeur.home', compact('publications'));
+    }
+
+    public function profile()
+    {
+        $professeur = Auth::guard('professeur')->user();
+        
+        if (!$professeur) {
+            return redirect()->route('professeur.login');
+        }
+        
+        return view('professeur.profile', compact('professeur'));
+    }
+
+    public function updatePhoto(Request $request)
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        $professeur = Auth::guard('professeur')->user();
+
+        if ($request->hasFile('photo')) {
+            // Supprimer l'ancienne photo si elle existe
+            if ($professeur->photo) {
+                Storage::disk('public')->delete('photos/' . $professeur->photo);
+            }
+
+            // Sauvegarder la nouvelle photo
+            $photoName = time() . '.' . $request->photo->extension();
+            $request->photo->storeAs('photos', $photoName, 'public');
+
+            // Mettre à jour la base de données
+            $professeur->photo = $photoName;
+            $professeur->save();
+
+            return redirect()->back()->with('success', 'Photo de profil mise à jour avec succès');
+        }
+
+        return redirect()->back()->with('error', 'Erreur lors du téléchargement de la photo');
     }
 }
