@@ -161,12 +161,27 @@
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="info-card">
-                        <div class="info-card-header">
-                            Publications récentes
-                        </div>
-                        <div class="info-list">
-                            <p class="text-muted text-center py-4">Aucune publication pour le moment</p>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Mes Publications</h5>
+                            @forelse($publications as $publication)
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-subtitle mb-2">{{ $publication->titre }}</h6>
+                                        <p class="card-text">{{ $publication->contenu }}</p>
+                                        <p class="card-text">
+                                            <small class="text-muted">Publié le {{ $publication->created_at->format('d/m/Y à H:i') }}</small>
+                                        </p>
+                                        <!-- Boutons d'action -->
+                                        <div class="mt-2">
+                                            <button class="btn btn-sm btn-primary">Modifier</button>
+                                            <button class="btn btn-sm btn-danger">Supprimer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-muted">Vous n'avez pas encore de publications.</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>

@@ -128,13 +128,12 @@ class ProfesseurController extends Controller
 
     public function profile()
     {
-        $professeur = Auth::guard('professeur')->user();
+        $professeur = auth()->user();
+        $publications = Publication::where('professeur_id', auth()->id())
+                                ->orderBy('created_at', 'desc')
+                                ->get();
         
-        if (!$professeur) {
-            return redirect()->route('professeur.login');
-        }
-        
-        return view('professeur.profile', compact('professeur'));
+        return view('professeur.profile', compact('professeur', 'publications'));
     }
 
     public function updatePhoto(Request $request)

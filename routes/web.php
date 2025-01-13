@@ -36,4 +36,3 @@ Route::post('/professeur/publier', [PublicationController::class, 'store'])
     ->middleware('auth:professeur');
 
 
-
