@@ -163,4 +163,31 @@ class ProfesseurController extends Controller
 
         return redirect()->back()->with('error', 'Erreur lors du téléchargement de la photo');
     }
+
+    public function searchprofile(Request $request)
+    {
+        $search = $request->input('search');
+        
+        if ($search) {
+            // Séparons la recherche en mots
+            $searchTerms = explode(' ', $search);
+            
+            $professeur = Professeur::where(function($query) use ($searchTerms) {
+                foreach ($searchTerms as $term) {
+                    $query->where(function($q) use ($term) {
+                        $q->where('nom', 'LIKE', "%{$term}%")
+                          ->orWhere('prenom', 'LIKE', "%{$term}%");
+                    });
+                }
+            })->first();
+
+            if (!$professeur) {
+                return redirect()->back()->with('error', 'Aucun professeur trouvé avec ce nom.');
+            }
+
+            return view('professeur.searchprofile', compact('professeur'));
+        }
+
+        return view('professeur.searchprofile');
+    }
 }

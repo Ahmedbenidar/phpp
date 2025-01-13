@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\PublicationController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('');
@@ -35,4 +36,10 @@ Route::post('/professeur/publier', [PublicationController::class, 'store'])
     ->name('professeur.publier')
     ->middleware('auth:professeur');
 
+Route::get('/professeur/searchprofile', [ProfesseurController::class, 'searchprofile'])->name('professeur.searchprofile');
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
 

@@ -25,7 +25,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Accueil</a>
                     </li>
-                    </ul>
+                    <li class="nav-item">
+                        <form class="d-flex" action="{{ route('professeur.searchprofile') }}" method="GET">
+                            <input class="form-control me-2" type="search" name="search" placeholder="Rechercher..." aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                        </form>
+                    </li>
+                </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -35,13 +41,25 @@
                             <li><a class="dropdown-item" href="{{ route('professeur.profile') }}">Profil</a></li>
                             <li><a class="dropdown-item" href="#">Paramètres</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Déconnexion</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <!-- Ajoutez ceci juste après la navbar -->
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <!-- Contenu principal -->
     <div class="container mt-4">
