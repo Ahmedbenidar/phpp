@@ -123,11 +123,7 @@ class ProfesseurController extends Controller
 
     public function home()
     {
-        $publications = Publication::with('professeur')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('professeur.home', compact('publications'));
+        return view('professeur.home');
     }
 
     public function profile()

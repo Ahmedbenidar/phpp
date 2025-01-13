@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('publications', function (Blueprint $table) {
             $table->id();
             $table->text('contenu');
-            $table->string('image')->nullable();
             $table->foreignId('professeur_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

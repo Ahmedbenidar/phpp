@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\PublicationController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('');
 });
 
 // Grouper toutes les routes des professeurs
@@ -31,6 +31,9 @@ Route::post('/professeur/update-photo', [ProfesseurController::class, 'updatePho
     ->name('professeur.update.photo')
     ->middleware('auth:professeur');
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/publications', [PublicationController::class, 'store'])->name('professeur.publications.store');
-});
+Route::post('/professeur/publier', [PublicationController::class, 'store'])
+    ->name('professeur.publier')
+    ->middleware('auth:professeur');
+
+
+
