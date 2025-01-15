@@ -28,4 +28,9 @@ class Professeur extends Authenticatable
     {
         return $this->belongsTo(Filiere::class);
     }
+
+    public function publications()
+    {
+        return $this->hasMany(Publication::class)->orderBy('created_at', 'desc');
+    }
 }

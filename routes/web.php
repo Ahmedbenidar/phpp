@@ -38,6 +38,8 @@ Route::post('/professeur/publier', [PublicationController::class, 'store'])
 
 Route::get('/professeur/searchprofile', [ProfesseurController::class, 'searchprofile'])->name('professeur.searchprofile');
 
+
+
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');

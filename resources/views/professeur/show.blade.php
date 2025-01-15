@@ -1,26 +1,109 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Professeur</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+        .card {
+            background-color: #1a1a1a;
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            color: white;
+        }
+        .info-label {
+            font-weight: bold;
+            color: orange;
+            min-width: 120px;
+            display: inline-block;
+        }
+        .btn-success {
+            background-color: green;
+            border: none;
+        }
+        .btn-success:hover {
+            background-color: darkgreen;
+        }
+        .info-value {
+            color: #ffffff;
+        }
+        .info-row {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    @include('layouts.nav')
 
-@section('content')
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h2>Profil de {{ $professeur->nom }} {{ $professeur->prenom }}</h2>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Détails du Professeur</h2>
+            <a href="{{ route('professeur.index') }}" class="btn btn-success">
+                <i class="fas fa-arrow-left me-2"></i>Retour
+            </a>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
-                    @if($professeur->photo)
-                        <img src="{{ asset($professeur->photo) }}" class="img-fluid rounded" alt="Photo de profil">
-                    @endif
+
+        <div class="card">
+            <div class="card-body">
+                <div class="info-row">
+                    <span class="info-label">Nom:</span>
+                    <span class="info-value">{{ $professeur->nom }}</span>
                 </div>
-                <div class="col-md-8">
-                    <h4>Informations personnelles</h4>
-                    <p><strong>Email:</strong> {{ $professeur->email }}</p>
-                    <p><strong>Téléphone:</strong> {{ $professeur->telephone }}</p>
-                    <!-- Ajoutez d'autres informations selon votre structure de base de données -->
+                <div class="info-row">
+                    <span class="info-label">Prénom:</span>
+                    <span class="info-value">{{ $professeur->prenom }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{ $professeur->email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Téléphone:</span>
+                    <span class="info-value">{{ $professeur->numero_telephone ?? 'Non renseigné' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Ville:</span>
+                    <span class="info-value">{{ $professeur->ciity->name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Filière:</span>
+                    <span class="info-value">{{ $professeur->filiere->name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Inscrit le:</span>
+                    <span class="info-value">{{ $professeur->created_at->format('d/m/Y') }}</span>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ route('professeur.edit', $professeur->id) }}" class="btn btn-success me-2">
+                        <i class="fas fa-edit me-2"></i>Modifier
+                    </a>
+                    <form action="{{ route('professeur.destroy', $professeur->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" 
+                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce professeur ?')">
+                            <i class="fas fa-trash me-2"></i>Supprimer
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

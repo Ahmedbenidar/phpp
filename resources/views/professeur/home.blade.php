@@ -11,10 +11,133 @@
     <!-- Ajout de SweetAlert2 pour de jolies alertes -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        h1 {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .alert {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #1a472a;
+            border-color: #1a472a;
+        }
+
+        .btn-primary:hover {
+            background: #133620;
+            border-color: #133620;
+        }
+
+        .publication-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 20px;
+        }
+        .publication-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .prof-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .publication-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .publication-content {
+            padding: 20px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .publication-footer {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+            border-radius: 0 0 12px 12px;
+        }
+        .prof-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar {
+            background: linear-gradient(to right, #1a472a, #000000) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+
+        .nav-link:hover {
+            color: #90EE90 !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">Espace Professeur</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -39,7 +162,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('professeur.profile') }}">Profil</a></li>
-                            <li><a class="dropdown-item" href="#">Paramètres</a></li>
+                            
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
@@ -79,11 +202,34 @@
                     @csrf
                     <div class="mb-3">
                         <label for="message" class="form-label">Votre message</label>
-                        <textarea class="form-control" id="message" name="message" rows="3" placeholder="Écrivez votre message ici..."></textarea>
+                        <textarea class="form-control" id="message" name="message" rows="3" placeholder="Quoi de neuf ?"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Publier</button>
                 </form>
             </div>
+        </div>
+
+        <!-- Publications List -->
+        <div class="container mt-4">
+            @foreach($publications as $publication)
+                <div class="card publication-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{{ $publication->professeur->photo 
+                                ? asset('storage/photos/' . $publication->professeur->photo) 
+                                : asset('images/default-avatar.png') }}"
+                                 class="profile-img me-3"
+                                 alt="Photo de {{ $publication->professeur->nom }}"
+                                 onerror="this.src='{{ asset('images/default-avatar.png') }}'">
+                            <div>
+                                <h6 class="mb-0">{{ $publication->professeur->nom }}</h6>
+                                <small class="text-muted">{{ $publication->created_at->format('d/m/Y H:i') }}</small>
+                            </div>
+                        </div>
+                        <p class="card-text">{{ $publication->contenu }}</p>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 

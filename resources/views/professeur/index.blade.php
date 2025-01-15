@@ -91,9 +91,7 @@
                                 <td>{{ $professeur->ciity->name }}</td>
                                 <td>{{ $professeur->filiere->name }}</td>
                                 <td class="action-column">
-                                    <a href="{{ route('professeur.show', $professeur->id) }}" class="btn btn-info btn-action">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                                   
                                     <a href="{{ route('professeur.edit', $professeur->id) }}" class="btn btn-success btn-action">
                                         <i class="fas fa-edit"></i>
                                     </a>

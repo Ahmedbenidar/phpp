@@ -77,8 +77,8 @@ class ProfesseurController extends Controller
 
     public function show($id)
     {
-        $professeur = Professeur::findOrFail($id);
-        return view('professeur.show', compact('professeur'));
+        $professeur = Professeur::with('publications')->findOrFail($id);
+        return view('professeur.searchprofile', compact('professeur'));
     }
 
     public function edit($id)
@@ -123,7 +123,11 @@ class ProfesseurController extends Controller
 
     public function home()
     {
-        return view('professeur.home');
+        $publications = Publication::with('professeur')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+    
+        return view('professeur.home', compact('publications'));
     }
 
     public function profile()
@@ -189,5 +193,10 @@ class ProfesseurController extends Controller
         }
 
         return view('professeur.searchprofile');
+    }
+
+    public function publications()
+    {
+        return $this->hasMany(Publication::class);
     }
 }
