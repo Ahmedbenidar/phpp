@@ -1,43 +1,50 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfesseurController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PublicationController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('');
 });
 
 // Grouper toutes les routes des professeurs
-Route::group(['prefix' => 'professeurs'], function () {
-    Route::get('/', [ProfesseurController::class, 'index'])->name('professeur.index');
-    Route::get('/create', [ProfesseurController::class, 'create'])->name('professeur.create');
-    Route::post('/store', [ProfesseurController::class, 'store'])->name('professeur.store');
-    Route::get('/{id}/professeur', [ProfesseurController::class, 'show'])->name('professeur.show');
-    Route::get('/{id}/edit', [ProfesseurController::class, 'edit'])->name('professeur.edit');
-    Route::put('/{id}', [ProfesseurController::class, 'update'])->name('professeur.update');
-    Route::delete('/{id}', [ProfesseurController::class, 'destroy'])->name('professeur.destroy');
+Route::group(['prefix' => 'client'], function () {
+    Route::get('/', [ClientController::class, 'index'])->name('client.index');
+    Route::get('/create', [ClientController::class, 'create'])->name('client.create');
+    Route::get('/{id}/client', [ClientController::class, 'show'])->name('client.show');
+    Route::get('/{id}/edit', [ClientController::class, 'edit'])->name('client.edit');
+    Route::put('/{id}', [ClientController::class, 'update'])->name('client.update');
+    Route::delete('/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
+    Route::post('/store', [ClientController::class, 'store'])->name('client.store');
+    
 });
 
-Route::get('/login', [ProfesseurController::class, 'showLoginForm'])->name('professeur.login');
-Route::post('/login', [ProfesseurController::class, 'login']);
+Route::get('/login', [ClientController::class, 'showLoginForm'])->name('client.login');
+Route::post('/login', [ClientController::class, 'login']);
 
-Route::get('/professeur/home', [ProfesseurController::class, 'home'])->name('professeur.home');
-Route::get('/professeur/profile', [ProfesseurController::class, 'profile'])
-    ->name('professeur.profile')
-    ->middleware('auth:professeur');
+Route::get('/client/home', [ClientController::class, 'home'])->name('client.home');
+Route::get('/client/profile', [ClientController::class, 'profile'])
+    ->name('client.profile')
+    ->middleware('auth:client');
 
-Route::post('/professeur/update-photo', [ProfesseurController::class, 'updatePhoto'])
-    ->name('professeur.update.photo')
-    ->middleware('auth:professeur');
+Route::post('/client/update-photo', [ClientController::class, 'updatePhoto'])
+    ->name('client.update.photo')
+    ->middleware('auth:client');
 
-Route::post('/professeur/publier', [PublicationController::class, 'store'])
-    ->name('professeur.publier')
-    ->middleware('auth:professeur');
+Route::post('/client/publier', [PublicationController::class, 'store'])
+    ->name('client.publier')
+    ->middleware('auth:client');
 
-Route::get('/professeur/searchprofile', [ProfesseurController::class, 'searchprofile'])->name('professeur.searchprofile');
+Route::post('/client/update-releve-bancaire', [ClientController::class, 'updateReleveBancaire'])
+    ->name('client.update.releve_bancaire')
+    ->middleware('auth:client');
 
+Route::get('/client/searchprofile', [ClientController::class, 'searchprofile'])->name('client.searchprofile');
+
+Route::get('/client/releve-bancaire/{id}', [ClientController::class, 'showReleveBancaire'])->name('client.releve_bancaire');
 
 
 Route::post('/logout', function () {

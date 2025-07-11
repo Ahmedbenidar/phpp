@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publication;
-use App\Models\Professeur;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -17,19 +17,19 @@ class PublicationController extends Controller
         ]);
 
         // Get current professor
-        $professeur = auth()->user();
+        $client = auth()->user();
         
         // Create publication with professor relationship
         $publication = Publication::create([
             'contenu' => $request->message,
-            'professeur_id' => $professeur->id
+            'client_id' => $client->id
         ]);
 
         // Log for debugging
         Log::info('Publication created', [
             'publication_id' => $publication->id,
-            'professeur_id' => $professeur->id,
-            'professeur_photo' => $professeur->photo
+            'client_id' => $client->id,
+            'client_photo' => $client->photo
         ]);
 
         return redirect()->back()->with('success', 'Publication créée avec succès!');
@@ -37,10 +37,8 @@ class PublicationController extends Controller
 
     public function index()
     {
-        $publications = Publication::with('professeur')
-                                 ->orderBy('created_at', 'desc')
-                                 ->get();
+        $publications = Publication::with('client') ->orderBy('created_at', 'desc')->get();
         
-        return view('professeur.home', compact('publications'));
+        return view('client.home', compact('publications'));
     }
 }

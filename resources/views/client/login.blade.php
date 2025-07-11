@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion Professeur</title>
+    <title>Connexion client</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -98,7 +98,7 @@
             <div class="col-md-6">
                 <div class="form-container">
                     <div class="form-header">
-                        <h2><i class="fas fa-user-circle"></i> Connexion Professeur</h2>
+                        <h2><i class="fas fa-user-circle"></i> Connexion client</h2>
                     </div>
 
                     @if(session('error'))
@@ -108,7 +108,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('professeur.login') }}" method="POST">
+                    <form action="{{ route('client.login') }}" method="POST">
                         @csrf
                         
                         <div class="mb-4">
@@ -150,7 +150,7 @@
 
                         <div class="register-link">
                             Pas encore de compte ? 
-                            <a href="{{ route('professeur.create') }}">S'inscrire</a>
+                            <a href="{{ route('client.create') }}">S'inscrire</a>
                         </div>
                     </form>
                 </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Professeur</title>
+    <title>Profil client</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
@@ -131,17 +131,17 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Espace Professeur</a>
+            <a class="navbar-brand" href="#">Espace client</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('professeur.home') }}">Accueil</a>
+                        <a class="nav-link" href="{{ route('client.home') }}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <form class="d-flex" action="{{ route('professeur.searchprofile') }}" method="GET">
+                        <form class="d-flex" action="{{ route('client.searchprofile') }}" method="GET">
                             <input class="form-control me-2" type="search" name="search" placeholder="Rechercher..." aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Rechercher</button>
                         </form>
@@ -153,7 +153,7 @@
                             Mon Compte
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('professeur.profile') }}">Profil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('client.profile') }}">Profil</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
@@ -169,15 +169,15 @@
     </nav>
 
     <div class="profile-container">
-        @if(isset($professeur))
+        @if(isset($client))
             <div class="profile-header">
                 <div class="profile-avatar-container">
-                    <img src="{{ asset('storage/photos/' . $professeur->photo) }}" alt="Profile" class="profile-avatar">
+                    <img src="{{ asset('storage/photos/' . $client->photo) }}" alt="Profile" class="profile-avatar">
                     <div class="add-photo-button">
                         <span>+</span>
                     </div>
                 </div>
-                <h1 class="profile-name">{{ $professeur->nom }} {{ $professeur->prenom }}</h1>
+                <h1 class="profile-name">{{ $client->nom }} {{ $client->prenom }}</h1>
             </div>
 
             <ul class="nav nav-tabs">
@@ -198,19 +198,19 @@
                         <h2 class="info-title">Informations</h2>
                         <div class="info-item">
                             <i class="far fa-clock"></i>
-                            <span>membre depuis {{ $professeur->created_at->format('d/m/Y') }}</span>
+                            <span>membre depuis {{ $client->created_at->format('d/m/Y') }}</span>
                         </div>
                         <div class="info-item">
                             <i class="far fa-envelope"></i>
-                            <span>{{ $professeur->email }}</span>
+                            <span>{{ $client->email }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="info-section">
                         <h2 class="info-title">Publications</h2>
-                        @if($professeur->publications && $professeur->publications->count() > 0)
-                            @foreach($professeur->publications as $publication)
+                        @if($client->publications && $client->publications->count() > 0)
+                            @foreach($client->publications as $publication)
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <p class="text-muted mb-1">
@@ -238,7 +238,7 @@
             </div>
         @else
             <div class="alert alert-info">
-                Aucun professeur trouvé.
+                Aucun client trouvé.
             </div>
         @endif
     </div>

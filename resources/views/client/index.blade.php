@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Professeurs</title>
+    <title>Liste des Clients </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -52,9 +52,9 @@
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
-            <h2 class="page-title">Liste des Professeurs</h2>
-            <a href="{{ route('professeur.create') }}" class="btn btn-success btn-add">
-                <i class="fas fa-plus me-2"></i>Nouveau Professeur
+            <h2 class="page-title">Liste des Clients</h2>
+            <a href="{{ route('client.create') }}" class="btn btn-success btn-add">
+                <i class="fas fa-plus me-2"></i>Nouveau Client
             </a>
         </div>
 
@@ -81,25 +81,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($professeurs as $professeur)
+                        @forelse($clients as $client)
                             <tr>
-                                <td>{{ $professeur->id }}</td>
-                                <td>{{ $professeur->nom }}</td>
-                                <td>{{ $professeur->prenom }}</td>
-                                <td>{{ $professeur->email }}</td>
-                                <td>{{ $professeur->numero_telephone ?? 'N/A' }}</td>
-                                <td>{{ $professeur->ciity->name }}</td>
-                                <td>{{ $professeur->filiere->name }}</td>
+                                <td>{{ $client->id }}</td>
+                                <td>{{ $client->nom }}</td>
+                                <td>{{ $client->prenom }}</td>
+                                <td>{{ $client->email }}</td>
+                                <td>{{ $client->numero_telephone ?? 'N/A' }}</td>
+                                <td>{{ $client->ciity->name }}</td>
+                                <td>{{ $client->filiere->name }}</td>
                                 <td class="action-column">
-                                   
-                                    <a href="{{ route('professeur.edit', $professeur->id) }}" class="btn btn-success btn-action">
+                                    <a href="{{ route('client.edit', $client->id) }}" class="btn btn-success btn-action">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('professeur.destroy', $professeur->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('client.destroy', $client->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-action" 
-                                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce professeur ?')">
+                                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?')">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -107,7 +106,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center">Aucun professeur trouvé</td>
+                                <td colspan="8" class="text-center">Aucun client trouvé</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -115,7 +114,7 @@
             </div>
 
             <div class="d-flex justify-content-center mt-4">
-                {{ $professeurs->links() }}
+                {{ $clients->links() }}
             </div>
         </div>
     </div>

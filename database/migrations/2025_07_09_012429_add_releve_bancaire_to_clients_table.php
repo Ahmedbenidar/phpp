@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('publications', function (Blueprint $table) {
-            $table->id();
-            $table->text('contenu');
-            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('clients', function (Blueprint $table) {
+            $table->string('releve_bancaire')->nullable();
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('publications');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropColumn('releve_bancaire');
+        });
     }
 };

@@ -12,8 +12,8 @@ class Filiere extends Model
     protected $fillable = ['name', 'description'];
 
     // Relation avec les professeurs (si nécessaire)
-    public function professeurs()
+    public function clients()
     {
-        return $this->hasMany(Professeur::class);
+        return $this->hasMany(Client::class);
     }
 }

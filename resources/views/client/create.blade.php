@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription Professeur</title>
+    <title>Inscription Client</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -141,7 +141,7 @@
             <div class="col-md-8">
                 <div class="form-container">
                     <div class="form-header">
-                        <h2><i class="fas fa-user-plus"></i> Inscription Professeur</h2>
+                        <h2><i class="fas fa-user-plus"></i> Inscription Client</h2>
                     </div>
 
                     @if(session('success'))
@@ -151,7 +151,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('professeur.store') }}" method="POST">
+                    <form action="{{ route('client.store') }}" method="POST">
                         @csrf
                         
                         <div class="row mb-4">
@@ -263,7 +263,7 @@
                                 </button>
                             </div>
                             <div class="col-button">
-                                <a href="{{ route('professeur.login') }}" class="btn btn-outline-light">
+                                <a href="{{ route('client.login') }}" class="btn btn-outline-light">
                                     <i class="fas fa-sign-in-alt me-2"></i>Se connecter
                                 </a>
                             </div>

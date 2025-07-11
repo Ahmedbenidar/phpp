@@ -6,25 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Publication extends Model
 {
-    protected $fillable = ['contenu', 'professeur_id'];
+    protected $fillable = ['contenu', 'client_id'];
 
-    public function professeur()
+    public function client()
     {
-        return $this->belongsTo(Professeur::class);
+        return $this->belongsTo(Client::class);
     }
 
-    public function likes()
-    {
-        return $this->hasMany(Like::class);
-    }
-
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-    public function isLikedByUser($userId)
-    {
-        return $this->likes()->where('professeur_id', $userId)->exists();
-    }
+   
 }

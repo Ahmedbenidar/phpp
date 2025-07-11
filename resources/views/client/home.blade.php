@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord Professeur</title>
+    <title>Tableau de bord client</title>
     <!-- jQuery first -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap CSS -->
@@ -139,7 +139,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Espace Professeur</a>
+            <a class="navbar-brand" href="#">Espace client</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -149,7 +149,7 @@
                         <a class="nav-link active" href="#">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <form class="d-flex" action="{{ route('professeur.searchprofile') }}" method="GET">
+                        <form class="d-flex" action="{{ route('client.searchprofile') }}" method="GET">
                             <input class="form-control me-2" type="search" name="search" placeholder="Rechercher..." aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Rechercher</button>
                         </form>
@@ -161,7 +161,7 @@
                             Mon Compte
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('professeur.profile') }}">Profil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('client.profile') }}">Profil</a></li>
                             
                             <li><hr class="dropdown-divider"></li>
                             <li>
@@ -186,7 +186,7 @@
 
     <!-- Contenu principal -->
     <div class="container mt-4">
-        <h1>Bienvenue dans votre espace professeur</h1>
+        <h1>Bienvenue dans votre espace client</h1>
         
         <!-- Messages de succès/erreur -->
         @if(session('success'))
@@ -198,7 +198,7 @@
         <!-- Formulaire de publication -->
         <div class="card mt-4">
             <div class="card-body">
-                <form action="{{ route('professeur.publier') }}" method="POST">
+                <form action="{{ route('client.publier') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="message" class="form-label">Votre message</label>
@@ -215,14 +215,14 @@
                 <div class="card publication-card">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
-                            <img src="{{ $publication->professeur->photo 
-                                ? asset('storage/photos/' . $publication->professeur->photo) 
+                            <img src="{{ $publication->client->photo 
+                                ? asset('storage/photos/' . $publication->client->photo) 
                                 : asset('images/default-avatar.png') }}"
                                  class="profile-img me-3"
-                                 alt="Photo de {{ $publication->professeur->nom }}"
+                                 alt="Photo de {{ $publication->client->nom }}"
                                  onerror="this.src='{{ asset('images/default-avatar.png') }}'">
                             <div>
-                                <h6 class="mb-0">{{ $publication->professeur->nom }}</h6>
+                                <h6 class="mb-0">{{ $publication->client->nom }}</h6>
                                 <small class="text-muted">{{ $publication->created_at->format('d/m/Y H:i') }}</small>
                             </div>
                         </div>

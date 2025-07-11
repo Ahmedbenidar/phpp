@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - {{ $professeur->nom }}</title>
+    <title>Profil - {{ $client->nom }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -14,7 +14,7 @@
             --background: #f8f9fa;
             --card-shadow: 0 2px 15px rgba(0,0,0,0.08);
             --navbar-height: 60px;
-        }
+        } 
 
         body {
             font-family: 'Inter', sans-serif;
@@ -192,10 +192,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('professeur.home') }}">Accueil</a>
+                        <a class="nav-link active" href="{{ route('client.home') }}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <form class="d-flex" action="{{ route('professeur.searchprofile') }}" method="GET">
+                        <form class="d-flex" action="{{ route('client.searchprofile') }}" method="GET">
                             <input class="form-control me-2" type="search" name="search" placeholder="Rechercher..." aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Rechercher</button>
                         </form>
@@ -239,9 +239,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center">
                     <div class="profile-picture-container position-relative d-inline-block">
-                        <img src="{{ $professeur->photo ? asset('storage/photos/'.$professeur->photo) : asset('images/default-avatar.png') }}" 
+                        <img src="{{ $client->photo ? asset('storage/photos/'.$client->photo) : asset('images/default-avatar.png') }}" 
                              class="profile-picture" alt="Photo de profil">
-                        <form action="{{ route('professeur.update.photo') }}" method="POST" enctype="multipart/form-data" id="photoForm">
+                        <form action="{{ route('client.update.photo') }}" method="POST" enctype="multipart/form-data" id="photoForm">
                             @csrf
                             @method('POST')
                             <input type="file" name="photo" id="photoInput" class="d-none" accept="image/*">
@@ -252,8 +252,8 @@
                             </label>
                         </form>
                     </div>
-                    <h1 class="mb-1">{{ $professeur->nom }} {{ $professeur->prenom }}</h1>
-                    <p class="text-muted">{{ $professeur->specialite }}</p>
+                    <h1 class="mb-1">{{ $client->nom }} {{ $client->prenom }}</h1>
+                    <p class="text-muted">{{ $client->specialite }}</p>
                 </div>
             </div>
         </div>
@@ -288,24 +288,39 @@
                                 <svg class="info-icon" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm1-13h-2v6h6v-2h-4v-4z"/>
                                 </svg>
-                                <span>membre depuis {{ \Carbon\Carbon::parse($professeur->date_embauche)->format('d/m/Y') }}</span>
+                                <span>membre depuis {{ \Carbon\Carbon::parse($client->date_embauche)->format('d/m/Y') }}</span>
                             </div>
                             <div class="info-item">
                                 <svg class="info-icon" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/>
                                 </svg>
-                                <span>{{ $professeur->email }}</span>
+                                <span>{{ $client->email }}</span>
                             </div>
-                           
                         </div>
                     </div>
+                    <!-- Formulaire d'upload de relevé bancaire -->
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <form action="{{ route('client.update.releve_bancaire') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="releve_bancaire" class="form-label">Relevé bancaire (image ou PDF) :</label>
+                                    <input type="file" class="form-control" name="releve_bancaire" id="releve_bancaire" accept="image/*,application/pdf" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Soumettre</button>
+                            </form>
+                        </div>
+                    </div>
+                    <a href="{{ route('client.releve_bancaire', ['id' => Auth::user()->id]) }}" class="btn btn-primary">
+                        Voir mon relevé bancaire
+                    </a>
                 </div>
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Mes Publications</h5>
                            <div class="publications-section">
-                        @foreach($professeur->publications as $publication)
+                        @foreach($client->publications as $publication)
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <p class="text-muted mb-1">

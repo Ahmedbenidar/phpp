@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier le Professeur</title>
+    <title>Modifier le client</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -35,9 +35,9 @@
 
     <div class="container">
         <div class="form-container">
-            <h2 class="mb-4">Modifier le Professeur</h2>
+            <h2 class="mb-4">Modifier le client</h2>
 
-            <form action="{{ route('professeur.update', $professeur->id) }}" method="POST">
+            <form action="{{ route('client.update', $client->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -45,7 +45,7 @@
                     <div class="col-md-6">
                         <label for="nom" class="form-label">Nom</label>
                         <input type="text" class="form-control @error('nom') is-invalid @enderror" 
-                               id="nom" name="nom" value="{{ old('nom', $professeur->nom) }}" required>
+                               id="nom" name="nom" value="{{ old('nom', $client->nom) }}" required>
                         @error('nom')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -54,7 +54,7 @@
                     <div class="col-md-6">
                         <label for="prenom" class="form-label">Prénom</label>
                         <input type="text" class="form-control @error('prenom') is-invalid @enderror" 
-                               id="prenom" name="prenom" value="{{ old('prenom', $professeur->prenom) }}" required>
+                               id="prenom" name="prenom" value="{{ old('prenom', $client->prenom) }}" required>
                         @error('prenom')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -64,7 +64,7 @@
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control @error('email') is-invalid @enderror" 
-                           id="email" name="email" value="{{ old('email', $professeur->email) }}" required>
+                           id="email" name="email" value="{{ old('email', $client->email) }}" required>
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -74,7 +74,7 @@
                     <label for="numero_telephone" class="form-label">Numéro de téléphone</label>
                     <input type="tel" class="form-control @error('numero_telephone') is-invalid @enderror" 
                            id="numero_telephone" name="numero_telephone" 
-                           value="{{ old('numero_telephone', $professeur->numero_telephone) }}">
+                           value="{{ old('numero_telephone', $client->numero_telephone) }}">
                     @error('numero_telephone')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -88,7 +88,7 @@
                             <option value="">Sélectionnez une ville</option>
                             @foreach($cities as $city)
                                 <option value="{{ $city->id }}" 
-                                    {{ old('city_id', $professeur->city_id) == $city->id ? 'selected' : '' }}>
+                                    {{ old('city_id', $client->city_id) == $city->id ? 'selected' : '' }}>
                                     {{ $city->name }}
                                 </option>
                             @endforeach
@@ -105,7 +105,7 @@
                             <option value="">Sélectionnez une filière</option>
                             @foreach($filieres as $filiere)
                                 <option value="{{ $filiere->id }}" 
-                                    {{ old('filiere_id', $professeur->filiere_id) == $filiere->id ? 'selected' : '' }}>
+                                    {{ old('filiere_id', $client->filiere_id) == $filiere->id ? 'selected' : '' }}>
                                     {{ $filiere->name }}
                                 </option>
                             @endforeach
@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('professeur.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('client.index') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Retour
                     </a>
                     <button type="submit" class="btn btn-success">
