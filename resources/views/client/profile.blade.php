@@ -5,212 +5,255 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil - {{ $client->nom }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #1a472a;
-            --primary-dark: #133620;
-            --secondary-color: #2d3748;
-            --background: #f8f9fa;
-            --card-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            --navbar-height: 60px;
-        } 
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            color: var(--secondary-color);
-            line-height: 1.7;
+            --navbar-color: linear-gradient(135deg, #1a472a, #000000);
+            --primary-color: #2c3e50;
+            --secondary-color: #7f8c8d;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #333333;
+            --text-light: #777777;
+            --border-color: #e0e0e0;
         }
 
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Navbar - Couleur conservée comme dans votre code original */
         .navbar {
-            background: linear-gradient(135deg, #1a472a, #000000) !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            height: var(--navbar-height);
-            padding: 0.5rem 1rem;
+            background: var(--navbar-color) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
         }
 
         .navbar-brand {
-            padding: 0.5rem 0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
-        .navbar .container {
-            height: 100%;
+        /* Section Profil */
+        .profile-header {
+            background: var(--card-bg);
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .profile-avatar-container {
+            position: relative;
+            width: 160px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--card-bg);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .avatar-edit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .avatar-edit:hover {
+            transform: scale(1.1);
+            background: #1a252f;
         }
 
+        .profile-name {
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .profile-title {
+            color: var(--text-light);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation secondaire */
+        .profile-nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .profile-nav .nav-link {
+            color: var(--text-dark);
+            font-weight: 500;
+            padding: 1rem 2rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .profile-nav .nav-link.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .profile-nav .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Cartes */
         .card {
             border: none;
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            background: var(--card-bg);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
         }
 
-        .btn {
-            padding: 0.6rem 1.2rem;
-            font-weight: 500;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+            color: var(--primary-color);
         }
 
+        /* Boutons */
         .btn-primary {
-            background: var(--primary-color);
+            background-color: var(--primary-color);
             border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
+            background-color: #1a252f;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .profile-section {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--card-shadow);
-        }
-
-        .profile-image {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
-        }
-
-        .profile-image:hover {
-            transform: scale(1.05);
-        }
-
-        h1, h2, h3 {
+        .btn-outline-primary {
+            border-color: var(--primary-color);
             color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 1rem;
         }
 
-        .nav-link {
-            font-weight: 500;
-            padding: 0.5rem 1rem !important;
-            line-height: 1.5;
-            transition: all 0.3s ease;
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
         }
 
-        .nav-link:hover {
-            color:rgb(6, 6, 6) !important;
-            transform: translateY(-2px);
-        }
-
-        .profile-picture-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .profile-picture {
-            width: 168px;
-            height: 168px;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            object-fit: cover;
-        }
-        .profile-nav {
-            background: white;
-            border-bottom: 1px solid #ddd;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            padding: 0 20px;
-        }
-        .profile-nav .nav-link {
-            padding: 15px 25px;
-            color:rgb(0, 0, 0);
-            font-weight: 600;
-        }
-        .profile-nav .nav-link.active {
-            color:rgb(24, 47, 15);
-            border-bottom: 3px solidrgb(2, 2, 2);
-        }
-        .profile-content {
-            background: #f0f2f5;
-            min-height: calc(100vh - 350px);
-            padding: 20px 0;
-        }
-        .info-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            margin-bottom: 50px;
-        }
-        .info-card-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #ddd;
-            font-weight: 900;
-        }
-        .info-list {
-            padding: 15px 20px;
-        }
+        /* Liste d'informations */
         .info-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
         }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
         .info-icon {
+            color: var(--primary-color);
+            margin-right: 1rem;
+            font-size: 1.1rem;
             width: 24px;
-            height: 24px;
-            margin-right: 10px;
-            color: #65676B;
+            text-align: center;
         }
-        .change-photo-btn {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: #f0f2f5;
-            border-radius: 50%;
-            padding: 8px;
-            cursor: pointer;
+
+        /* Publications */
+        .publication {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .publication:last-child {
+            border-bottom: none;
+        }
+
+        .publication-date {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Section upload */
+        .upload-section {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .form-control {
+            border: 1px solid var(--border-color);
+            padding: 0.7rem 1rem;
+            border-radius: 6px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.1);
+        }
+
+        /* Alertes */
+        .alert {
+            border-radius: 6px;
+            border: none;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#"> </a>
-           
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('client.home') }}">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <form class="d-flex" action="{{ route('client.searchprofile') }}" method="GET">
-                            <input class="form-control me-2" type="search" name="search" placeholder="Rechercher..." aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                        </form>
-                    </li>
-                </ul>
+            <a class="navbar-brand" href="{{ route('client.home') }}">Mon Espace</a>
+            
+            <div class="collapse navbar-collapse">
+                <form class="d-flex ms-auto me-3" action="{{ route('client.searchprofile') }}" method="GET">
+                    <input class="form-control me-2" type="search" name="search" placeholder="Rechercher..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Mon Compte
+                            <i class="fas fa-user-circle me-1"></i> Mon Compte
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                             <li>
+                            <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">Déconnexion</button>
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                                    </button>
                                 </form>
                             </li>
                         </ul>
@@ -220,124 +263,124 @@
         </div>
     </nav>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    <div class="profile-header">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8 text-center">
-                    <div class="profile-picture-container position-relative d-inline-block">
-                        <img src="{{ $client->photo ? asset('storage/photos/'.$client->photo) : asset('images/default-avatar.png') }}" 
-                             class="profile-picture" alt="Photo de profil">
-                        <form action="{{ route('client.update.photo') }}" method="POST" enctype="multipart/form-data" id="photoForm">
-                            @csrf
-                            @method('POST')
-                            <input type="file" name="photo" id="photoInput" class="d-none" accept="image/*">
-                            <label for="photoInput" class="change-photo-btn" title="Changer la photo">
-                                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm1-13h-2v4H7v2h4v4h2v-4h4v-2h-4V7z"/>
-                                </svg>
-                            </label>
-                        </form>
-                    </div>
-                    <h1 class="mb-1">{{ $client->nom }} {{ $client->prenom }}</h1>
-                    <p class="text-muted">{{ $client->specialite }}</p>
-                </div>
+    <div class="container py-4">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show mb-4">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
-    </div>
+        @endif
 
-    <div class="profile-nav">
-        <div class="container">
-            <ul class="nav justify-content-center">
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mb-4">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <div class="profile-header text-center">
+            <div class="profile-avatar-container">
+                <img src="{{ $client->photo ? asset('storage/photos/'.$client->photo) : asset('images/default-avatar.png') }}" 
+                     class="profile-avatar" alt="Photo de profil">
+                <form action="{{ route('client.update.photo') }}" method="POST" enctype="multipart/form-data" id="photoForm">
+                    @csrf
+                    <input type="file" name="photo" id="photoInput" class="d-none" accept="image/*">
+                    <label for="photoInput" class="avatar-edit" title="Changer la photo">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                </form>
+            </div>
+            <h1 class="profile-name">{{ $client->nom }} {{ $client->prenom }}</h1>
+            <p class="profile-title">{{ $client->specialite }}</p>
+        </div>
+
+        <div class="profile-nav">
+            <ul class="nav nav-pills justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">À propos</a>
+                    <a class="nav-link active" href="#">
+                        <i class="fas fa-user me-2"></i>À propos
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Publications</a>
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-newspaper me-2"></i>Publications
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Photos</a>
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-images me-2"></i>Photos
+                    </a>
                 </li>
             </ul>
         </div>
-    </div>
 
-    <div class="profile-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="info-card">
-                        <div class="info-card-header">
-                            Informations
+        <div class="row mt-4">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle me-2"></i>Informations personnelles
+                    </div>
+                    <div class="card-body">
+                        <div class="info-item">
+                            <i class="fas fa-calendar-alt info-icon"></i>
+                            <span>Membre depuis {{ \Carbon\Carbon::parse($client->date_embauche)->format('d/m/Y') }}</span>
                         </div>
-                        <div class="info-list">
-                            <div class="info-item">
-                                <svg class="info-icon" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm1-13h-2v6h6v-2h-4v-4z"/>
-                                </svg>
-                                <span>membre depuis {{ \Carbon\Carbon::parse($client->date_embauche)->format('d/m/Y') }}</span>
-                            </div>
-                            <div class="info-item">
-                                <svg class="info-icon" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/>
-                                </svg>
-                                <span>{{ $client->email }}</span>
-                            </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope info-icon"></i>
+                            <span>{{ $client->email }}</span>
                         </div>
                     </div>
-                    <!-- Formulaire d'upload de relevé bancaire -->
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <form action="{{ route('client.update.releve_bancaire') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="releve_bancaire" class="form-label">Relevé bancaire (image ou PDF) :</label>
-                                    <input type="file" class="form-control" name="releve_bancaire" id="releve_bancaire" accept="image/*,application/pdf" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Soumettre</button>
-                            </form>
-                        </div>
-                    </div>
-                    <a href="{{ route('client.releve_bancaire', ['id' => Auth::user()->id]) }}" class="btn btn-primary">
-                        Voir mon relevé bancaire
-                    </a>
                 </div>
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Mes Publications</h5>
-                           <div class="publications-section">
-                        @foreach($client->publications as $publication)
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <p class="text-muted mb-1">
-                                        <small>Publié le {{ $publication->created_at->format('d/m/Y à H:i') }}</small>
-                                    </p>
-                                    <p class="card-text">{{ $publication->contenu }}</p>
-                                    
-                                    @if($publication->fichier)
-                                        <a href="{{ asset('storage/publications/' . $publication->fichier) }}" 
-                                           class="btn btn-sm btn-primary" 
-                                           target="_blank">
-                                            <i class="fas fa-file-download"></i> Voir le document
-                                        </a>
-                                    @endif
-                                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-file-invoice me-2"></i>Relevé bancaire
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('client.update.releve_bancaire') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="releve_bancaire" class="form-label">Importer un fichier</label>
+                                <input class="form-control" type="file" name="releve_bancaire" id="releve_bancaire" accept="image/*,application/pdf" required>
                             </div>
-                        @endforeach
+                            <button type="submit" class="btn btn-primary w-100 mb-2">
+                                <i class="fas fa-upload me-2"></i>Téléverser
+                            </button>
+                        </form>
+                        <a href="{{ route('client.releve_bancaire', ['id' => Auth::user()->id]) }}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-eye me-2"></i>Consulter mon relevé
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-newspaper me-2"></i>Mes dernières publications
+                    </div>
+                    <div class="card-body">
+                        @forelse($client->publications as $publication)
+                            <div class="publication">
+                                <p class="publication-date">
+                                    <i class="far fa-clock me-1"></i>
+                                    Publié le {{ $publication->created_at->format('d/m/Y à H:i') }}
+                                </p>
+                                <p class="mb-3">{{ $publication->contenu }}</p>
+                                
+                                @if($publication->fichier)
+                                    <a href="{{ asset('storage/publications/' . $publication->fichier) }}" 
+                                       class="btn btn-sm btn-primary" 
+                                       target="_blank">
+                                        <i class="fas fa-file-download me-1"></i>Télécharger
+                                    </a>
+                                @endif
+                            </div>
+                        @empty
+                            <p class="text-muted text-center py-3">Aucune publication pour le moment</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -346,9 +389,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    document.getElementById('photoInput').addEventListener('change', function() {
-        document.getElementById('photoForm').submit();
-    });
+        document.getElementById('photoInput').addEventListener('change', function() {
+            document.getElementById('photoForm').submit();
+        });
     </script>
 </body>
 </html>

@@ -2,12 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
+
+Route::post('/client/{id}/save-manual-transactions', [ClientController::class, 'saveManualTransactions'])->name('client.saveManualTransactions');
+Route::get('/client/{id}/releve-bancaire', [ClientController::class, 'showReleveBancaire'])->name('client.showReleveBancaire');
+
 use App\Http\Controllers\PublicationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('');
+    return redirect()->route('client.login'); // ou 'login' selon le nom de votre route
 });
 
 // Grouper toutes les routes des professeurs

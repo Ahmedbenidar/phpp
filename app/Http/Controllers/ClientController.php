@@ -25,6 +25,22 @@ class ClientController extends Controller
         return view('client.index', compact('clients'));
     }
 
+    public function saveManualTransactions(Request $request, $id)
+    {
+        $client = Client::findOrFail($id);
+
+        $transactions = $request->input('transactions', []);
+
+        // Here you should implement saving logic, e.g., save to DB or update client transactions
+        // For demonstration, let's just log or store in session (adjust as needed)
+
+        // Example: Save transactions in session (replace with DB save)
+        session(['manual_transactions_' . $client->id => $transactions]);
+
+        return redirect()->route('client.showReleveBancaire', $client->id)
+            ->with('success', 'Transactions mises à jour avec succès.');
+    }
+
     public function create()
     {
         $cities = City::all();
@@ -105,7 +121,7 @@ class ClientController extends Controller
         $data = $request->except('password');
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
-        }
+        }/*  */
 
         $client->update($data);
 
@@ -243,30 +259,19 @@ class ClientController extends Controller
         $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
         $text = '';
 
-        if ($extension === 'pdf') {
-            // 1. Essayer d'extraire le texte
-            $parser = new PdfParser();
-            $pdf = $parser->parseFile($filePath);
-            $text = $pdf->getText();
-
-            // 2. Si le texte est trop court, c'est sûrement un PDF scanné → OCR
-            if (strlen(trim($text)) < 50) {
-                // Convertir chaque page en image et faire l'OCR
-                $pdfToImage = new Pdf($filePath);
-                $pages = $pdfToImage->getNumberOfPages();
-                $text = '';
-                for ($i = 1; $i <= $pages; $i++) {
-                    $pdfToImage->setPage($i)->saveImage(storage_path("app/temp_page_$i.jpg"));
-                    putenv('TESSDATA_PREFIX=C:\Program Files\Tesseract-OCR\tessdata');
-                    $text .= (new TesseractOCR(storage_path("app/temp_page_$i.jpg")))->lang('fra', 'eng')->run() . "\n";
-                    @unlink(storage_path("app/temp_page_$i.jpg")); // Nettoyage
-                }
-            }
-        } else {
-            // Image directe → OCR
-            putenv('TESSDATA_PREFIX=C:\Program Files\Tesseract-OCR\tessdata');
-            $text = (new TesseractOCR($filePath))->lang('fra', 'eng')->run();
+        // Always use OCR for both PDF and image for consistent text extraction
+        putenv('TESSDATA_PREFIX=C:\Program Files\Tesseract-OCR\tessdata');
+        $pdfToImage = new Pdf($filePath);
+        $pages = $pdfToImage->getNumberOfPages();
+        $text = '';
+        for ($i = 1; $i <= $pages; $i++) {
+            $pdfToImage->setPage($i)->saveImage(storage_path("app/temp_page_$i.jpg"));
+            $text .= (new TesseractOCR(storage_path("app/temp_page_$i.jpg")))->lang('fra', 'eng')->run() . "\n";
+            @unlink(storage_path("app/temp_page_$i.jpg")); // Nettoyage
         }
+
+        // Debug: log OCR text
+        \Log::info("OCR Text for client $id: " . $text);
 
         $lines = explode("\n", $text);
         $transactions = $this->parseReleveText($text);
@@ -294,27 +299,45 @@ class ClientController extends Controller
                 // Découpe le reste de la ligne sur 2 espaces ou plus, ou tabulation
                 $parts = preg_split('/\s{2,}|\t+/', $rest);
 
-                // On essaye d'assigner les colonnes
-                $description = '';
-                $credit = '';
+                // Initialisation des colonnes
+                $descriptionParts = [];
                 $debit = '';
+                $credit = '';
                 $solde = '';
 
-                // On cherche les montants dans la ligne
-                foreach ($parts as $p) {
-                    // Montant (accepte 1 000,00 ou 1000.00)
+                // Collecte tous les montants dans la ligne
+                $amounts = [];
+                $amountIndexes = [];
+                foreach ($parts as $index => $p) {
                     if (preg_match('/^-?\d{1,3}(?:[ .]\d{3})*(?:[,.]\d{2})$/', $p)) {
-                        if ($debit === '') {
-                            $debit = $p;
-                        } elseif ($credit === '') {
-                            $credit = $p;
-                        } elseif ($solde === '') {
-                            $solde = $p;
-                        }
-                    } else {
-                        $description .= ($description ? ' ' : '') . $p;
+                        $amounts[] = $p;
+                        $amountIndexes[] = $index;
                     }
                 }
+
+                // Assignation des montants selon leur position
+                // Si deux montants, on suppose que le premier est débit, le second crédit
+                // Si un montant, on suppose que c'est un débit
+                if (count($amounts) == 2) {
+                    if ($amountIndexes[0] < $amountIndexes[1]) {
+                        $debit = $amounts[0];
+                        $credit = $amounts[1];
+                    } else {
+                        $credit = $amounts[0];
+                        $debit = $amounts[1];
+                    }
+                } elseif (count($amounts) == 1) {
+                    $debit = $amounts[0];
+                }
+
+                // Description = parties restantes (sans les montants)
+                $descriptionParts = [];
+                foreach ($parts as $index => $p) {
+                    if (!in_array($index, $amountIndexes)) {
+                        $descriptionParts[] = $p;
+                    }
+                }
+                $description = implode(' ', $descriptionParts);
 
                 $transactions[] = [
                     'date' => $date,

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détails du Professeur</title>
+    <title>Détails du Client </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -50,8 +50,8 @@
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Détails du Professeur</h2>
-            <a href="{{ route('professeur.index') }}" class="btn btn-success">
+            <h2>Détails du Client</h2>
+            <a href="{{ route('client.index') }}" class="btn btn-success">
                 <i class="fas fa-arrow-left me-2"></i>Retour
             </a>
         </div>
@@ -60,42 +60,42 @@
             <div class="card-body">
                 <div class="info-row">
                     <span class="info-label">Nom:</span>
-                    <span class="info-value">{{ $professeur->nom }}</span>
+                    <span class="info-value">{{ $client->nom }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Prénom:</span>
-                    <span class="info-value">{{ $professeur->prenom }}</span>
+                    <span class="info-value">{{ $client->prenom }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Email:</span>
-                    <span class="info-value">{{ $professeur->email }}</span>
+                    <span class="info-value">{{ $client->email }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Téléphone:</span>
-                    <span class="info-value">{{ $professeur->numero_telephone ?? 'Non renseigné' }}</span>
+                    <span class="info-value">{{ $client->numero_telephone ?? 'Non renseigné' }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Ville:</span>
-                    <span class="info-value">{{ $professeur->ciity->name }}</span>
+                    <span class="info-value">{{ $client->ciity->name }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Filière:</span>
-                    <span class="info-value">{{ $professeur->filiere->name }}</span>
+                    <span class="info-value">{{ $client->filiere->name }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Inscrit le:</span>
-                    <span class="info-value">{{ $professeur->created_at->format('d/m/Y') }}</span>
+                    <span class="info-value">{{ $client->created_at->format('d/m/Y') }}</span>
                 </div>
 
                 <div class="mt-4">
-                    <a href="{{ route('professeur.edit', $professeur->id) }}" class="btn btn-success me-2">
+                    <a href="{{ route('client.edit', $client->id) }}" class="btn btn-success me-2">
                         <i class="fas fa-edit me-2"></i>Modifier
                     </a>
-                    <form action="{{ route('professeur.destroy', $professeur->id) }}" method="POST" class="d-inline">
+                    <form action="{{ route('client.destroy', $client->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" 
-                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce professeur ?')">
+                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?')">
                             <i class="fas fa-trash me-2"></i>Supprimer
                         </button>
                     </form>
